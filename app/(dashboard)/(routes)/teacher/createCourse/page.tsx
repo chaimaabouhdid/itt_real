@@ -39,10 +39,11 @@ const { isSubmitting, isValid } = form.formState;
 const onSubmit = async (values: z.infer<typeof formSchema>) => {
     //this is to catch the error.
     try{
-        const response = await axios.post("api/courses", values);
+        const response = await axios.post("/api/courses", values);
         router.push('/teacher/courses/${response.data.id}');
         toast.success("Course created successfully!");
-    } catch{ 
+    } catch (error) {
+        console.log(error);
         toast.error("Something went wrong!");
     }
     console.log(values);

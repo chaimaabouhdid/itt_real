@@ -1,7 +1,7 @@
 const AboutPage = () => {
     return ( 
         <div>
-            this is a search page
+            this is a about page
         </div>
      );
 }

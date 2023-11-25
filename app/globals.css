@@ -4,9 +4,10 @@
 
 html,
 body,
-:root{
+:root {
   height: 100%;
 }
+ 
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -79,3 +80,9 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+.ql-container {
+  font-size: 16px !important;
+}
+
+@import "~@uploadthing/react/styles.css"

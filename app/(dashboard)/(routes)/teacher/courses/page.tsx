@@ -6,7 +6,7 @@ const CoursesPage = () => {
         <div className="p-6">
             <Link href="/teacher/createCourse">
             <Button
-            className="bg-purple-300 text-white"
+            className="bg-emerald-700 text-white"
             >
                 New Course
             </Button>

@@ -40,7 +40,7 @@ const onSubmit = async (values: z.infer<typeof formSchema>) => {
     //this is to catch the error.
     try{
         const response = await axios.post("/api/courses", values);
-        router.push('/teacher/courses/${response.data.id}');
+        router.push(`/teacher/courses/${response.data.id}`);
         toast.success("Course created successfully!");
     } catch (error) {
         console.log(error);
@@ -95,7 +95,7 @@ const onSubmit = async (values: z.infer<typeof formSchema>) => {
                                 </Button>
                             </Link>
                             <Button
-                            className="bg-purple-300 text-white"
+                            className="bg-emerald-700 text-white"
                             type="submit"
                             disabled={ !isValid || isSubmitting}
                             >

@@ -19,7 +19,7 @@ interface ImageFormProps {
 
 const formSchema = z.object({
   imageUrl: z.string().min(1, {
-    message: "Image is required",
+    message: "Image is required!",
   }),
 });
 
@@ -40,7 +40,7 @@ export const ImageForm = ({
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong!");
     }
   }
 

@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Information about ITT
+
+ITT is a LMS Platform that allow you to check courses online, buy them and watch videos in "student mode". However, in "teacher mode", you can upload different courses by adding their name, description, image...etc
+
 ## Getting Started
 
 First, run the development server:

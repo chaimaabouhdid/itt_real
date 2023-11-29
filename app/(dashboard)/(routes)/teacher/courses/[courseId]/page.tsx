@@ -1,11 +1,12 @@
 import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { LayoutDashboard } from "lucide-react";
+import { ListOrdered, Settings2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { TitleForm } from "./_components/title-form";
 import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
+import { CategoryForm } from "./_components/category-form";
 
 const CourseIdPage = async ({
     params
@@ -61,7 +62,7 @@ const CourseIdPage = async ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
                 <div>
                     <div className="flex items-center gap-x-2">
-                        <IconBadge icon={LayoutDashboard}/>
+                        <IconBadge icon={Settings2}/>
                         <h2 className="text-xl">
                             Customize your course
                         </h2>
@@ -78,6 +79,24 @@ const CourseIdPage = async ({
                     initialData = {course}
                     courseId = {course.id}
                     />
+                    <CategoryForm
+                    initialData={course}
+                    courseId={course.id}
+                    options={categories.map((category) => ({
+                    label: category.name,
+                    value: category.id,
+                    }))}
+                    />
+                </div>
+                <div className="space-y-6">
+                    <div>
+                        <div className="flex items-center gap-x-2">
+                            <IconBadge icon={ListOrdered} />
+                            <h2 className="text-xl">
+                            Chapters
+                            </h2>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { Pencil, PlusCircle, ImageIcon } from "lucide-react";
+import { Pencil, ImageIcon, Upload } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -36,7 +36,7 @@ export const ImageForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success("Image Uploaded Successfully!");
+      toast.success("Uploaded Successfully!");
       toggleEdit();
       router.refresh();
     } catch {
@@ -54,8 +54,8 @@ export const ImageForm = ({
           )}
           {!isEditing && !initialData.imageUrl && (
             <>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add an image
+              <Upload className="h-4 w-4 mr-2" />
+              Upload an image
             </>
           )}
           {!isEditing && initialData.imageUrl && (

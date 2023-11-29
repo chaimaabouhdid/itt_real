@@ -1,12 +1,12 @@
 "use client";
 
-import { Compass, Users2, Layout, Mail, BarChart, List, MonitorCheck } from "lucide-react";
+import { Compass, Users2, Mail, List, MonitorCheck, LayoutGrid, BarChartBig } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
 
 const guestRoutes =[
     {
-        icon: Layout,
+        icon: LayoutGrid,
         label: "Dashboard",
         href: "/",
     },
@@ -38,7 +38,7 @@ const teacherRoutes = [
         href: "/teacher/courses",
     },
     {
-        icon: BarChart,
+        icon: BarChartBig,
         label: "Analytics",
         href: "/teacher/analytics",
     },

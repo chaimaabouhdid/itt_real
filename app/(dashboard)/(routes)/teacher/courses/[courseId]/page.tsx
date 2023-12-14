@@ -1,12 +1,14 @@
 import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { ListOrdered, Settings2 } from "lucide-react";
+import { ListOrdered, Paperclip, PoundSterling, Settings2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { TitleForm } from "./_components/title-form";
 import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/category-form";
+import { FeeForm } from "./_components/fee-form";
+import { AttachmentForm } from "./_components/attachment-form";
 
 const CourseIdPage = async ({
     params
@@ -22,7 +24,14 @@ const CourseIdPage = async ({
     const course = await db.course.findUnique({
         where: {
             id: params.courseId
-        }
+        },
+        include: {
+            attachments: {
+                orderBy: {
+                    createdAt: "desc",
+                },
+            },
+        },
     });
 
     const categories = await db.category.findMany({
@@ -96,6 +105,33 @@ const CourseIdPage = async ({
                             Chapters
                             </h2>
                         </div>
+                        <div>
+                            TODO: List of chapters
+                        </div>
+                    </div>
+                    <div>
+                        <div className="flex items-center gap-x-2">
+                            <IconBadge icon={PoundSterling} />
+                            <h2 className="text-xl">
+                                Sell your course
+                            </h2>
+                        </div>
+                        <FeeForm
+                            initialData={course}
+                            courseId={course.id}
+                        />
+                    </div>
+                    <div>
+                    <div className="flex items-center gap-x-2">
+                            <IconBadge icon={Paperclip} />
+                            <h2 className="text-xl">
+                                Materials & Attachments
+                            </h2>
+                        </div>
+                        <AttachmentForm
+                         initialData = {course}
+                         courseId = {course.id}
+                        />
                     </div>
                 </div>
             </div>

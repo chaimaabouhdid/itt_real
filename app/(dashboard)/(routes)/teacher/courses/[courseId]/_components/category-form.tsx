@@ -94,13 +94,13 @@ export const CategoryForm = ({
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 mt-4"
           >
-            <FormField
+             <FormField
               control={form.control}
               name="categoryId"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Combobox
+                  <Combobox
                       options={...options}
                       {...field}
                     />

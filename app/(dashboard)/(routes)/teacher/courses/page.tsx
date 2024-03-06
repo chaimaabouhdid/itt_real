@@ -20,8 +20,8 @@ const CoursesPage = async () => {
     const data = await getData()
     return ( 
         <div className="p-6">
-            <DataTable columns={columns} data={data} />
-        </div>
+          <DataTable columns={columns} data={data}/>
+      </div>
      );
 }
 export default CoursesPage;

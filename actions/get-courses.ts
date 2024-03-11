@@ -54,8 +54,7 @@ type GetCourses = {
           };
         })
       );
-  
-      return coursesWithProgress; // Add return statement to return the result catch (error) {
+      return coursesWithProgress; 
   } catch (error) {
     console.log("[GET_COURSES]", error);
     return [];

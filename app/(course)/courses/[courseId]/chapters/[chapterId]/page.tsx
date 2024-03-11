@@ -39,15 +39,21 @@ const ChapterIdPage = async ({
   }
 
 
-  const isLocked = chapter.isFree;
-  const completeOnEnd = !userProgress?.isCompleted;
+  const isLocked = !chapter.isFree;
+  const completeOnEnd = !!!userProgress?.isCompleted;
 
   return ( 
     <div>
       {userProgress?.isCompleted && (
         <Banner
           variant="success"
-          label="You already completed this chapter!"
+          label="You already completed this chapter."
+        />
+      )}
+      {isLocked && (
+        <Banner
+          variant="warning"
+          label="You need to purchase this course to watch this chapter."
         />
       )}
       <div className="flex flex-col max-w-4xl mx-auto pb-20">
@@ -67,6 +73,14 @@ const ChapterIdPage = async ({
             <h2 className="text-2xl font-semibold mb-2">
               {chapter.title}
             </h2>
+            {(
+              <CourseProgressButton
+                chapterId={params.chapterId}
+                courseId={params.courseId}
+                nextChapterId={nextChapter?.id}
+                isCompleted={!!userProgress?.isCompleted}
+              />
+            )}
           </div>
           <Separator />
           <div>
@@ -81,7 +95,7 @@ const ChapterIdPage = async ({
                     href={attachment.url}
                     target="_blank"
                     key={attachment.id}
-                    className="flex items-center p-3 w-full bg-sky-200 border text-emerald-700 rounded-md hover:underline"
+                    className="flex items-center p-3 w-full bg-sky-200 border text-slate-700 rounded-md hover:underline"
                   >
                     <File />
                     <p className="line-clamp-1">

@@ -37,11 +37,6 @@ const teacherRoutes = [
         label: "Courses",
         href: "/teacher/courses",
     },
-    {
-        icon: BarChartBig,
-        label: "Analytics",
-        href: "/teacher/analytics",
-    },
 ]
 export const SidebarRoutes = () => {
     const pathname = usePathname();

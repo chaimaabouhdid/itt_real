@@ -40,7 +40,7 @@ export const Actions = ({
 
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong!");
     } finally {
       setIsLoading(false);
     }
@@ -52,11 +52,11 @@ export const Actions = ({
 
       await axios.delete(`/api/courses/${courseId}`);
 
-      toast.success("Course deleted");
+      toast.success("Course deleted Successfully!");
       router.refresh();
       router.push(`/teacher/courses`);
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Published courses cannot be deleted. Unpublish the course first!");
     } finally {
       setIsLoading(false);
     }

@@ -9,7 +9,6 @@ import { TitleForm } from "./_components/title-form";
 import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/category-form";
-import { FeeForm } from "./_components/fee-form";
 import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { Banner } from "@/components/banner";
@@ -61,7 +60,6 @@ const CourseIdPage = async ({
         course.title,
         course.description,
         course.imageUrl,
-        course.fee,
         course.categoryId,
         course.chapters.some(chapter => chapter.isPublished),
       ];
@@ -77,7 +75,7 @@ const CourseIdPage = async ({
     <>
         {!course.isPublished && (
         <Banner
-          label="This course is unpublished. It will not be visible to the students."
+          label="This course is unpublished! It will not be visible to the students."
         />
       )}
       <div className="p-6">
@@ -138,18 +136,7 @@ const CourseIdPage = async ({
                         courseId = {course.id}
                         />
                     </div>
-                    <div>
-                        <div className="flex items-center gap-x-2">
-                            <IconBadge icon={PoundSterling} />
-                            <h2 className="text-xl">
-                                Sell your course
-                            </h2>
-                        </div>
-                        <FeeForm
-                            initialData={course}
-                            courseId={course.id}
-                        />
-                    </div>
+                    
                     <div>
                     <div className="flex items-center gap-x-2">
                             <IconBadge icon={Paperclip} />

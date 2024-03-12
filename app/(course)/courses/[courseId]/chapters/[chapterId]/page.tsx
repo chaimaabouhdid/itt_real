@@ -47,13 +47,7 @@ const ChapterIdPage = async ({
       {userProgress?.isCompleted && (
         <Banner
           variant="success"
-          label="You already completed this chapter."
-        />
-      )}
-      {isLocked && (
-        <Banner
-          variant="warning"
-          label="You need to purchase this course to watch this chapter."
+          label="You have already completed this chapter 🎉"
         />
       )}
       <div className="flex flex-col max-w-4xl mx-auto pb-20">
@@ -95,7 +89,7 @@ const ChapterIdPage = async ({
                     href={attachment.url}
                     target="_blank"
                     key={attachment.id}
-                    className="flex items-center p-3 w-full bg-sky-200 border text-slate-700 rounded-md hover:underline"
+                    className="flex items-center p-3 w-full bg-slate-200 border text-slate-700 rounded-md hover:underline"
                   >
                     <File />
                     <p className="line-clamp-1">

@@ -17,6 +17,7 @@ interface VideoPlayerProps {
   completeOnEnd: boolean;
   title: string;
   isLocked: boolean;
+  isCompleted: boolean;
 }
 
 export const VideoPlayer = ({
@@ -26,31 +27,35 @@ export const VideoPlayer = ({
   nextChapterId,
   completeOnEnd,
   title,
+  isCompleted,
 }: VideoPlayerProps) => {
   const [isReady, setIsReady] = useState(false);
   const router = useRouter();
   const confetti = useConfettiStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onEnd = async () => {
     try {
-      if (completeOnEnd) {
-        await axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
-          isCompleted: true,
-        });
+      setIsLoading(true);
 
-        if (!nextChapterId) {
-          confetti.onOpen();
-        }
+      await axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, {
+        isCompleted: !isCompleted
+      });
 
-        toast.success("Progress Updated Successfully!");
-        router.refresh();
-
-        if (nextChapterId) {
-          router.push(`/courses/${courseId}/chapters/${nextChapterId}`)
-        }
+      if (!isCompleted && !nextChapterId) {
+        confetti.onOpen();
       }
+
+      if (!isCompleted && nextChapterId) {
+        router.push(`/courses/${courseId}/chapters/${nextChapterId}`);
+      }
+
+      toast.success("Progress Updated Successfully!");
+      router.refresh();
     } catch {
-      toast.error("Something went wrong!");
+      toast.error("Something went wrong!!!");
+    } finally {
+      setIsLoading(false);
     }
   }
 

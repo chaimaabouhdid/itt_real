@@ -2,9 +2,9 @@
 
 import { CheckCircle, PlayCircle } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-
 import { cn } from "@/lib/utils";
 
+// Defining the props interface for the CourseSidebarItem component
 interface CourseSidebarItemProps {
   label: string;
   id: string;
@@ -13,6 +13,7 @@ interface CourseSidebarItemProps {
   isLocked: boolean;
 };
 
+// Exporting the CourseSidebarItem component
 export const CourseSidebarItem = ({
   label,
   id,
@@ -21,15 +22,17 @@ export const CourseSidebarItem = ({
   isLocked,
 }: CourseSidebarItemProps) => {
   const pathname = usePathname();
+  // Using useRouter hook to access Next.js router functionality
   const router = useRouter();
-
+  // Determining the icon based on completion
   const Icon = isLocked ? PlayCircle : (isCompleted ? CheckCircle : PlayCircle);
+  // Checking if the sidebar item is active based on the current pathname
   const isActive = pathname?.includes(id);
-
+   // Function to handle click event on the sidebar item
   const onClick = () => {
     router.push(`/courses/${courseId}/chapters/${id}`);
   }
-
+  // Rendering the sidebar item as a button element
   return (
     <button
       onClick={onClick}
@@ -41,6 +44,7 @@ export const CourseSidebarItem = ({
         isCompleted && isActive && "bg-emerald-200/20",
       )}
     >
+      {/* Rendering the icon and label */}
       <div className="flex items-center gap-x-2 py-4">
         <Icon
           size={22}
@@ -52,6 +56,7 @@ export const CourseSidebarItem = ({
         />
         {label}
       </div>
+       {/* Rendering a border indicator for the active item */}
       <div className={cn(
         "ml-auto opacity-0 border-2 border-slate-900 h-full transition-all",
         isActive && "opacity-100",

@@ -14,7 +14,6 @@ import {
 } from "@tanstack/react-table"
 import Link from "next/link"
 import { Plus } from "lucide-react"
-
 import {
   Table,
   TableBody,
@@ -26,18 +25,22 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
+// Define the props interface for the DataTable component
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
+// Define the DataTable component
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  // Define state for sorting and column filters
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
 
+  // Initialize the React table instance
   const table = useReactTable({
     data,
     columns,
@@ -55,6 +58,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
+       {/* Filter input and "New Course" button */}
       <div className="flex items-center py-4 justify-between">
         <Input
           placeholder="Filter courses..."
@@ -72,8 +76,8 @@ export function DataTable<TData, TValue>({
                 New Course
             </Button>
             </Link>
-
       </div>
+       {/* Table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -95,6 +99,7 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
+             {/* Render table rows */}
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -118,6 +123,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      {/* Pagination controls */}
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"

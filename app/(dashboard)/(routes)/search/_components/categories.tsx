@@ -11,13 +11,14 @@ import {
   FcPortraitMode ,
 } from "react-icons/fc";
 import { IconType } from "react-icons";
-
 import { CategoryItem } from "./category-item";
 
+// Define the props interface for Categories component
 interface CategoriesProps {
   items: Category[];
 }
 
+// Define a mapping of category names to icon components
 const iconMap: Record<Category["name"], IconType> = {
   "Communication Skills": FcVoicePresentation,
   "Leadership": FcBusinessman ,
@@ -28,12 +29,15 @@ const iconMap: Record<Category["name"], IconType> = {
   "Emotional Intelligence": FcMindMap,
 };
 
+// Define the Categories functional component
 export const Categories = ({
   items,
 }: CategoriesProps) => {
   return (
     <div className="flex items-center gap-x-2 overflow-x-auto pb-2">
+       {/* Iterate over each category item */}
       {items.map((item) => (
+        // Render a CategoryItem component for each category
         <CategoryItem
           key={item.id}
           label={item.name}

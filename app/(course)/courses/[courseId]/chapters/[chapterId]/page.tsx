@@ -10,17 +10,21 @@ import { Preview } from "@/components/preview";
 import { VideoPlayer } from "./_components/video-player";
 import { CourseProgressButton } from "./_components/course-progress-button";
 
+// Define the ChapterIdPage component
 const ChapterIdPage = async ({
   params
 }: {
   params: { courseId: string; chapterId: string }
 }) => {
+  // Retrieve the user ID from authentication
   const { userId } = auth();
   
+  // Redirect to the homepage if the user is not authenticated
   if (!userId) {
     return redirect("/");
   } 
 
+  // Fetch chapter details, course details, user progress, and other related data
   const {
     chapter,
     course,
@@ -34,16 +38,20 @@ const ChapterIdPage = async ({
     courseId: params.courseId,
   });
 
+  // If chapter or course is not found, redirect to the homepage
   if (!chapter || !course) {
     return redirect("/")
   }
 
-
   const isLocked = !chapter.isFree;
+
+  // Determine if the chapter should be marked as completed on video end
   const completeOnEnd = !!!userProgress?.isCompleted;
 
+  // Render the chapter page content
   return ( 
     <div>
+      {/* Banner indicating chapter completion */}
       {userProgress?.isCompleted && (
         <Banner
           variant="success"
@@ -51,6 +59,7 @@ const ChapterIdPage = async ({
         />
       )}
       <div className="flex flex-col max-w-4xl mx-auto pb-20">
+         {/* Video player component */}
         <div className="p-4">
           <VideoPlayer
             chapterId={params.chapterId}
@@ -60,13 +69,17 @@ const ChapterIdPage = async ({
             playbackId={muxData?.playbackId!}
             isLocked={isLocked}
             completeOnEnd={completeOnEnd}
+            isCompleted={!!userProgress?.isCompleted}
           />
         </div>
+         {/* Chapter details */}
         <div>
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
+             {/* Chapter title */}
             <h2 className="text-2xl font-semibold mb-2">
               {chapter.title}
             </h2>
+            {/* Course progress button */}
             {(
               <CourseProgressButton
                 chapterId={params.chapterId}
@@ -77,9 +90,11 @@ const ChapterIdPage = async ({
             )}
           </div>
           <Separator />
+          {/* Chapter description */}
           <div>
             <Preview value={chapter.description!} />
           </div>
+          {/* Attachments */}
           {!!attachments.length && (
             <>
               <Separator />
@@ -105,5 +120,4 @@ const ChapterIdPage = async ({
     </div>
    );
 }
- 
 export default ChapterIdPage;

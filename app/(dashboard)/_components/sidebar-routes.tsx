@@ -4,6 +4,7 @@ import { Compass, Users2, Mail, List, MonitorCheck, LayoutGrid, BarChartBig } fr
 import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
 
+// Define guest routes for the sidebar
 const guestRoutes =[
     {
         icon: LayoutGrid,
@@ -31,6 +32,8 @@ const guestRoutes =[
         href: "/terms-of-service",
     },
 ];
+
+// Define teacher routes for the sidebar
 const teacherRoutes = [
     {
         icon: List,
@@ -38,12 +41,18 @@ const teacherRoutes = [
         href: "/teacher/courses",
     },
 ]
+
+// Define the SidebarRoutes component
 export const SidebarRoutes = () => {
+     // Get the current pathname
     const pathname = usePathname();
+    // Determine if it's a teacher page based on the pathname
     const isTeacherPage = pathname?.includes("/teacher");
+     // Select routes based on whether it's a teacher page or not
     const routes = isTeacherPage ? teacherRoutes : guestRoutes;
     return ( 
         <div className="flex flex-col w-full">
+             {/* Map through routes and render SidebarItem components */}
             {routes.map((route) => (
                 <SidebarItem
                 key={route.href}

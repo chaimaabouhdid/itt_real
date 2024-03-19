@@ -23,10 +23,12 @@ const CourseIdPage = async ({
   }) => {
     const { userId } = auth();
   
+    // Redirect to the home page if the user is not authenticated
     if (!userId) {
       return redirect("/");
     }
   
+    // Fetch the course details from the database
     const course = await db.course.findUnique({
       where: {
         id: params.courseId,
@@ -46,16 +48,19 @@ const CourseIdPage = async ({
       },
     });
     
+     // Fetch all available categories
     const categories = await db.category.findMany({
         orderBy: {
           name: "asc",
         },
       });
     
+      // Redirect to the home page if the course is not found
       if (!course) {
         return redirect("/");
       }
     
+      // Calculate completion status and fields count
       const requiredFields = [
         course.title,
         course.description,
@@ -73,6 +78,7 @@ const CourseIdPage = async ({
 
    return (
     <>
+     {/* Display a warning banner if the course is unpublished */}
         {!course.isPublished && (
         <Banner
           label="This course is unpublished! It will not be visible to the students."
@@ -88,6 +94,7 @@ const CourseIdPage = async ({
               Complete all fields {completionText}
             </span>
                 </div>
+                {/* Component for course actions (publish, unpublish, delete) */}
                 <Actions
             disabled={!isComplete}
             courseId={params.courseId}
@@ -102,18 +109,22 @@ const CourseIdPage = async ({
                             Customize your course
                         </h2>
                     </div>
+                     {/* Form for updating course title */}
                     <TitleForm
                     initialData = {course}
                     courseId = {course.id}
                     />
+                    {/* Form for updating course description */}
                     <DescriptionForm
                     initialData = {course}
                     courseId = {course.id}
                     />
+                     {/* Form for updating course image */}
                     <ImageForm
                     initialData = {course}
                     courseId = {course.id}
                     />
+                     {/* Form for updating course category */}
                     <CategoryForm
                     initialData={course}
                     courseId={course.id}
@@ -131,6 +142,7 @@ const CourseIdPage = async ({
                             Chapters
                             </h2>
                         </div>
+                         {/* Form for managing course chapters */}
                         <ChaptersForm
                         initialData = {course}
                         courseId = {course.id}
@@ -144,6 +156,7 @@ const CourseIdPage = async ({
                                 Materials & Attachments
                             </h2>
                         </div>
+                         {/* Form for managing course attachments */}
                         <AttachmentForm
                          initialData = {course}
                          courseId = {course.id}

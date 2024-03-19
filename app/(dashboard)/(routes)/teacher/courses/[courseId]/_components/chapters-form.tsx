@@ -9,7 +9,6 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Chapter, Course } from "@prisma/client";
-
 import {
   Form,
   FormControl,
@@ -20,7 +19,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
-
 import { ChaptersList } from "./chapters-list";
 
 interface ChaptersFormProps {
@@ -28,6 +26,7 @@ interface ChaptersFormProps {
   courseId: string;
 };
 
+// Define the schema for the chapter form
 const formSchema = z.object({
   title: z.string().min(1),
 });
@@ -39,12 +38,14 @@ export const ChaptersForm = ({
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
+  // Toggle state for chapter creation
   const toggleCreating = () => {
     setIsCreating((current) => !current);
   }
 
   const router = useRouter();
 
+ // Initialize form for chapter creation
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,8 +55,10 @@ export const ChaptersForm = ({
 
   const { isSubmitting, isValid } = form.formState;
 
+   // Handle chapter submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+       // Send POST request to create a new chapter
       await axios.post(`/api/courses/${courseId}/chapters`, values);
       toast.success("Chapter Created Successfully!");
       toggleCreating();
@@ -65,10 +68,12 @@ export const ChaptersForm = ({
     }
   }
 
+  // Handle chapter reordering
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
       setIsUpdating(true);
 
+      // Send PUT request to update chapter order
       await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
         list: updateData
       });
@@ -81,12 +86,14 @@ export const ChaptersForm = ({
     }
   }
 
+  // Redirect to edit chapter page
   const onEdit = (id: string) => {
     router.push(`/teacher/courses/${courseId}/chapters/${id}`);
   }
 
   return (
     <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
+      {/* Show loading indicator while updating chapters */}
       {isUpdating && (
         <div className="absolute h-full w-full bg-slate-500/20 top-0 right-0 rounded-m flex items-center justify-center">
           <MoreHorizontal className="animate-spin h-6 w-6 text-emerald-700" />
@@ -94,6 +101,7 @@ export const ChaptersForm = ({
       )}
       <div className="font-medium flex items-center justify-between">
         Course chapters
+          {/* Button to toggle chapter creation */}
         <Button onClick={toggleCreating} variant="ghost">
           {isCreating ? (
             <>Cancel</>
@@ -105,6 +113,7 @@ export const ChaptersForm = ({
           )}
         </Button>
       </div>
+       {/* Form for creating a new chapter */}
       {isCreating && (
         <Form {...form}>
           <form
@@ -127,6 +136,7 @@ export const ChaptersForm = ({
                 </FormItem>
               )}
             />
+             {/* Submit button for creating a new chapter */}
             <Button
               disabled={!isValid || isSubmitting}
               type="submit"
@@ -136,12 +146,15 @@ export const ChaptersForm = ({
           </form>
         </Form>
       )}
+      {/* List of existing chapters */}
       {!isCreating && (
         <div className={cn(
           "text-sm mt-2",
           !initialData.chapters.length && "text-slate-500 italic"
         )}>
+           {/* Show message if there are no chapters */}
           {!initialData.chapters.length && "No chapters"}
+           {/* Render the chapters list component */}
           <ChaptersList
             onEdit={onEdit}
             onReorder={onReorder}
@@ -149,6 +162,7 @@ export const ChaptersForm = ({
           />
         </div>
       )}
+        {/* Instruction for reordering chapters */}
       {!isCreating && (
         <p className="text-xs text-muted-foreground mt-4">
           Drag and drop to reorder the chapters in your course.

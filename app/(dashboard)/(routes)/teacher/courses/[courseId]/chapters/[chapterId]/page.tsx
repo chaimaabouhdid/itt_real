@@ -1,12 +1,10 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
-
+import { ArrowLeft, LayoutDashboard, Video } from "lucide-react";
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
 import { Banner } from "@/components/banner";
-
 import { ChapterTitleForm } from "./_components/chapter-title-form";
 import { ChapterDescriptionForm } from "./_components/chapter-description-form";
 import { ChapterVideoForm } from "./_components/chapter-video-form";
@@ -19,10 +17,12 @@ const ChapterIdPage = async ({
 }) => {
   const { userId } = auth();
 
+  // Redirect to the home page if the user is not authenticated
   if (!userId) {
     return redirect("/");
   }
 
+   // Fetch the chapter details from the database
   const chapter = await db.chapter.findUnique({
     where: {
       id: params.chapterId,
@@ -33,10 +33,12 @@ const ChapterIdPage = async ({
     },
   });
 
+  // Redirect to the home page if the chapter is not found
   if (!chapter) {
     return redirect("/")
   }
 
+  // Calculate completion status and fields count
   const requiredFields = [
     chapter.title,
     chapter.description,
@@ -52,6 +54,7 @@ const ChapterIdPage = async ({
 
   return (
     <>
+      {/* Display a warning banner if the chapter is unpublished */}
       {!chapter.isPublished && (
         <Banner
           variant="warning"
@@ -61,6 +64,7 @@ const ChapterIdPage = async ({
       <div className="p-6">
         <div className="flex items-center justify-between">
           <div className="w-full">
+             {/* Link to navigate back to the course creation page */}
             <Link
               href={`/teacher/courses/${params.courseId}`}
               className="flex items-center text-sm hover:opacity-75 transition mb-6"
@@ -77,6 +81,7 @@ const ChapterIdPage = async ({
                   Complete all fields {completionText}
                 </span>
               </div>
+               {/* Component for chapter actions (publish, unpublish, delete) */}
               <ChapterActions
                 disabled={!isComplete}
                 courseId={params.courseId}
@@ -95,11 +100,13 @@ const ChapterIdPage = async ({
                   Customize Your Chapter
                 </h2>
               </div>
+               {/* Form for updating chapter title */}
               <ChapterTitleForm
                 initialData={chapter}
                 courseId={params.courseId}
                 chapterId={params.chapterId}
               />
+                {/* Form for updating chapter description */}
               <ChapterDescriptionForm
                 initialData={chapter}
                 courseId={params.courseId}
@@ -114,6 +121,7 @@ const ChapterIdPage = async ({
                 Add a video
               </h2>
             </div>
+             {/* Form for updating chapter video */}
             <ChapterVideoForm
               initialData={chapter}
               chapterId={params.chapterId}

@@ -9,7 +9,6 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Chapter } from "@prisma/client";
-
 import {
   Form,
   FormControl,
@@ -37,29 +36,36 @@ export const ChapterDescriptionForm = ({
   courseId,
   chapterId
 }: ChapterDescriptionFormProps) => {
+  // State to manage editing mode
   const [isEditing, setIsEditing] = useState(false);
 
+  // Function to toggle editing mode
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
 
+  // Form hook for handling form submission
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      // Set initial form values to the initial chapter description
       description: initialData?.description || ""
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
+  // Function to handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      // Update chapter description via API patch request
       await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
-      toast.success("Chapter updated");
+      toast.success("Chapter Updated Successfully!");
+      // Exit editing mode after successful update
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Something went wrong!");
     }
   }
 
@@ -67,6 +73,7 @@ export const ChapterDescriptionForm = ({
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Chapter description
+         {/* Button to toggle editing mode */}
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
@@ -78,6 +85,7 @@ export const ChapterDescriptionForm = ({
           )}
         </Button>
       </div>
+       {/* Render current chapter description if not in editing mode */}
       {!isEditing && (
         <div className={cn(
           "text-sm mt-2",
@@ -91,12 +99,14 @@ export const ChapterDescriptionForm = ({
           )}
         </div>
       )}
+     {/* Render form for editing chapter description if in editing mode */}
       {isEditing && (
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 mt-4"
           >
+            {/* Input field for editing chapter description */}
             <FormField
               control={form.control}
               name="description"
@@ -111,6 +121,7 @@ export const ChapterDescriptionForm = ({
                 </FormItem>
               )}
             />
+            {/* Button to save edited chapter description */}
             <div className="flex items-center gap-x-2">
               <Button
                 disabled={!isValid || isSubmitting}

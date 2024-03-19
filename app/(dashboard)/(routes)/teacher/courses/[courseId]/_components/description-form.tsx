@@ -9,7 +9,6 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Course } from "@prisma/client";
-
 import {
   Form,
   FormControl,
@@ -21,27 +20,34 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 
+// Define props interface for DescriptionForm component
 interface DescriptionFormProps {
   initialData: Course;
   courseId: string;
 };
 
+// Define form schema for validation using Zod
 const formSchema = z.object({
   description: z.string().min(1, {
     message: "Description is required!",
   }),
 });
 
+// Define the DescriptionForm component
 export const DescriptionForm = ({
   initialData,
   courseId
 }: DescriptionFormProps) => {
+  // State to track whether the form is in editing mode or not
   const [isEditing, setIsEditing] = useState(false);
 
+  // Function to toggle the editing mode
   const toggleEdit = () => setIsEditing((current) => !current);
 
+  // Router instance for navigation
   const router = useRouter();
 
+  // Form hook to manage form state and validation
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,23 +55,32 @@ export const DescriptionForm = ({
     },
   });
 
+  // Destructuring form state variables
   const { isSubmitting, isValid } = form.formState;
 
+  // Function to handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      // Send a PATCH request to update the course description
       await axios.patch(`/api/courses/${courseId}`, values);
+      // Show success toast
       toast.success("Updated Successfully!");
+      // Exit editing mode
       toggleEdit();
+      // Refresh the page
       router.refresh();
     } catch {
+      // Show error toast if something goes wrong
       toast.error("Something went wrong!");
     }
   }
 
+  // Render the component JSX
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Description
+          {/* Button to toggle editing mode */}
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
@@ -77,6 +92,7 @@ export const DescriptionForm = ({
           )}
         </Button>
       </div>
+       {/* Render the description text or placeholder */}
       {!isEditing && (
         <p className={cn(
           "text-sm mt-2",
@@ -85,6 +101,7 @@ export const DescriptionForm = ({
           {initialData.description || "No description"}
         </p>
       )}
+       {/* Render the form for editing description */}
       {isEditing && (
         <Form {...form}>
           <form
@@ -97,6 +114,7 @@ export const DescriptionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
+                     {/* Textarea input for description */}
                     <Textarea
                       disabled={isSubmitting}
                       placeholder="e.g. 'This course covers...'"
@@ -108,6 +126,7 @@ export const DescriptionForm = ({
               )}
             />
             <div className="flex items-center gap-x-2">
+                {/* Button to submit the form */}
               <Button
               className="bg-emerald-700 text-white"
                 disabled={!isValid || isSubmitting}

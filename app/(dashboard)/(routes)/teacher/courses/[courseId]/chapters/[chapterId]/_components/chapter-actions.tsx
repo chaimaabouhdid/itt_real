@@ -5,7 +5,6 @@ import { Trash } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 
@@ -25,18 +24,22 @@ export const ChapterActions = ({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
+  // Function to handle publish/unpublish action
   const onClick = async () => {
     try {
       setIsLoading(true);
 
       if (isPublished) {
+        // Unpublish the chapter if already published
         await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/unpublish`);
-        toast.success("Chapter unpublished");
+        toast.success("Chapter Unpublished Successfully!");
       } else {
+        // Publish the chapter if not already published
         await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/publish`);
-        toast.success("Chapter published");
+        toast.success("Chapter Published Successfully!");
       }
 
+      // Refresh the page to reflect changes
       router.refresh();
     } catch {
       toast.error("Something went wrong");
@@ -45,17 +48,19 @@ export const ChapterActions = ({
     }
   }
   
+  // Function to handle delete action
   const onDelete = async () => {
     try {
       setIsLoading(true);
 
+      // Delete the chapter
       await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
 
-      toast.success("Chapter deleted");
+      toast.success("Chapter Deleted Successfully!");
       router.refresh();
       router.push(`/teacher/courses/${courseId}`);
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Something Went Wrong!");
     } finally {
       setIsLoading(false);
     }
@@ -63,6 +68,7 @@ export const ChapterActions = ({
 
   return (
     <div className="flex items-center gap-x-2">
+       {/* Button to trigger publish/unpublish action */}
       <Button
         onClick={onClick}
         disabled={disabled || isLoading}
@@ -71,6 +77,7 @@ export const ChapterActions = ({
       >
         {isPublished ? "Unpublish" : "Publish"}
       </Button>
+       {/* Confirm modal for deleting the chapter */}
       <ConfirmModal onConfirm={onDelete}>
         <Button size="sm" disabled={isLoading}>
           <Trash className="h-4 w-4" />

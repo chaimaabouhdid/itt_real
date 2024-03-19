@@ -8,35 +8,44 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Course } from "@prisma/client";
 import Image from "next/image";
-
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
+// Define props interface for ImageForm component
 interface ImageFormProps {
   initialData: Course
   courseId: string;
 };
 
+// Define form schema for validation using zod
 const formSchema = z.object({
   imageUrl: z.string().min(1, {
     message: "Image is required!",
   }),
 });
 
+// Define the ImageForm component
 export const ImageForm = ({
   initialData,
   courseId
 }: ImageFormProps) => {
+  // State to track whether the form is in editing mode or not
   const [isEditing, setIsEditing] = useState(false);
 
+  // Function to toggle the editing mode
   const toggleEdit = () => setIsEditing((current) => !current);
 
+  // Router instance for navigation
   const router = useRouter();
 
+  // Function to handle form submission
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      // Send a PATCH request to update the course image URL
       await axios.patch(`/api/courses/${courseId}`, values);
+      // Show success toast
       toast.success("Uploaded Successfully!");
+      // Exit editing mode
       toggleEdit();
       router.refresh();
     } catch {
@@ -44,10 +53,12 @@ export const ImageForm = ({
     }
   }
 
+   // Render the component JSX
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Image
+         {/* Button to toggle editing mode */}
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing && (
             <>Cancel</>
@@ -66,6 +77,7 @@ export const ImageForm = ({
           )}
         </Button>
       </div>
+      {/* Render the image or icon based on editing mode and existence of image URL */}
       {!isEditing && (
         !initialData.imageUrl ? (
           <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
@@ -82,6 +94,7 @@ export const ImageForm = ({
           </div>
         )
       )}
+      {/* Render the file upload component if in editing mode */}
       {isEditing && (
         <div>
           <FileUpload

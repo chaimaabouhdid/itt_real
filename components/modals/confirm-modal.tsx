@@ -14,6 +14,7 @@ import {
 
 interface ConfirmModalProps {
   children: React.ReactNode;
+  // Function to be executed when the user confirms the action
   onConfirm: () => void;
 };
 
@@ -22,11 +23,14 @@ export const ConfirmModal = ({
   onConfirm
 }: ConfirmModalProps) => {
   return (
+     // Main AlertDialog component
     <AlertDialog>
       <AlertDialogTrigger asChild>
+        {/* The element that triggers the dialog */}
         {children}
       </AlertDialogTrigger>
       <AlertDialogContent>
+         {/* Content of the AlertDialog */}
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -34,7 +38,9 @@ export const ConfirmModal = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          {/* Cancel button */}
+          <AlertDialogCancel>Cancel</AlertDialogCancel> 
+          {/* Confirm button */}
           <AlertDialogAction onClick={onConfirm}>
             Continue
           </AlertDialogAction>

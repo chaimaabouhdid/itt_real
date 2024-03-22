@@ -8,7 +8,6 @@ import Link from "next/link";
 import { SearchInput } from "./search-input";
 import { isTeacher } from "@/lib/teacher";
 
-// Define the NavbarRoutes component
 export const NavbarRoutes = () => {
     const {userId} = useAuth();
     const pathname = usePathname();
@@ -18,14 +17,12 @@ export const NavbarRoutes = () => {
 
     return ( 
         <>
-         {/* Render SearchInput component if the current route is the search UI */}
           {isSearchUI && (
         <div className="hidden md:block">
           <SearchInput />
         </div>
       )}
         <div className="flex gap-x-2 ml-auto">
-           {/* Conditional rendering based on route and user authentication */}
             {isTeacherUI || isCoursePage ? (
                 <Link href="/">
                 <Button size="sm" variant="ghost">
@@ -34,14 +31,12 @@ export const NavbarRoutes = () => {
                 </Button>
                 </Link>
              ) : isTeacher(userId) ? (
-               // Render "Welcome, Teacher!" button if user is a teacher
               <Link href="/teacher/courses">
                 <Button size="sm" variant="ghost">
                   Welcome, Teacher!
                 </Button>
               </Link>
             ) : null}
-             {/* Render UserButton component for user authentication */}
             <UserButton
               afterSignOutUrl="/"
             />

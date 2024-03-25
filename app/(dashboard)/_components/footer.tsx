@@ -9,7 +9,9 @@ import {
 
 export default function Footer() {
     return (
-        <footer className="flex flex-col justify-between py-10 w-full gap-16 items-center bg-slate-700 text-white">
+        <footer className="flex flex-col justify-between py-10 w-full gap-16 items-center 
+        overflow-hidden border rounded-lg p-3 h-full
+         bg-white text-slate-900">
             <h1 className="text-4xl font-bold text-emerald-600">IT Torch</h1>
             <div className="flex flex-col gap-4 md:flex-row md:gap-8">
                 <Link href="/">Dashboard</Link>
